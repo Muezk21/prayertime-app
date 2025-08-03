@@ -10,8 +10,8 @@ from twilio.rest import Client
 # --- Constants & Config ---
 #Prayer calculation methods
 method_names = {
-    1: "University of Islamic Sciences, Karachi", 
-    2: "Islamic Society of North America (ISNA)",
+    1: "Islamic Society of North America (ISNA)", 
+    2: "University of Islamic Sciences, Karachi",
     3: "Muslim World League (MWL)",
     4: "Umm Al-Qura University, Makkah",
     5: "Egyptian General Authority of Survey",
