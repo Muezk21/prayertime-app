@@ -62,15 +62,15 @@ load_dotenv()
 
 # Twilio credentials
 try:
-    account_sid = st.secrets["ACCOUNT_SID"]
-    auth_token = st.secrets["AUTH_TOKEN"]
-    twilio_number = st.secrets["PHONE_NUMBER"]
-    your_number = st.secrets["YOUR_NUMBER"]
+    account_sid = st.secrets["account_sid"]
+    auth_token = st.secrets["auth_token"]
+    twilio_number = st.secrets["twilio_number"]
+    your_number = st.secrets["your_number"]
 except:    
-    account_sid = os.getenv("ACCOUNT_SID")
-    auth_token = os.getenv("AUTH_TOKEN")
-    twilio_number = os.getenv("TWILIO_NUMBER")
-    your_number = os.getenv("YOUR_PHONE_NUMBER")
+    account_sid = os.getenv("account_sid")
+    auth_token = os.getenv("auth_token")
+    twilio_number = os.getenv("twilio_number")
+    your_number = os.getenv("your_number")
 
 if account_sid and auth_token:
     client = Client(account_sid, auth_token)
