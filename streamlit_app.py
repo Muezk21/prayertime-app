@@ -78,6 +78,14 @@ else:
     client = None
     st.warning("Twilio credentials not set. SMS notifications will be disabled.")
 
+# Add this right after your credential loading lines
+st.write("DEBUG INFO:")
+st.write(f"Account SID: {account_sid}")
+st.write(f"Auth Token: {auth_token}")  
+st.write(f"Twilio Number: {twilio_number}")
+st.write(f"Your Number: {your_number}")
+
+
 # --- Streamlit UI: User Inputs ---
 st.title("🕌 Islamic Prayer Time App")
 st.write("This app shows prayer times for your location and notifies you before the next prayer.")
