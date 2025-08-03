@@ -65,11 +65,11 @@ try:
     account_sid = st.secrets["TWILIO_ACCOUNT_SID"]
     auth_token = st.secrets["TWILIO_AUTH_TOKEN"]
     twilio_number = st.secrets["TWILIO_PHONE_NUMBER"]
-    your_number = st.secrets["YOUR_PHONE_NUMBER"]
+    your_number = st.secrets["YOUR_NUMBER"]
 except:    
-    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
-    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
-    twilio_number = os.getenv("TWILIO_PHONE_NUMBER")
+    account_sid = os.getenv("ACCOUNT_SID")
+    auth_token = os.getenv("AUTH_TOKEN")
+    twilio_number = os.getenv("TWILIO_NUMBER")
     your_number = os.getenv("YOUR_PHONE_NUMBER")
 
 if account_sid and auth_token:
