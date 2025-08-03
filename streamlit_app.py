@@ -135,33 +135,13 @@ else:
 
 # --- Core Functions ---
 def get_current_location():
-    st.subheader("📍 Get Current Location")
-
-    city = st.text_input(
-        "Enter your city",
-        placeholder="e.g. New York, Riyadh, Karachi",
-        help="Enter city name or 'City, Country' for better accuracy"
-    )
-
-    if city:
-        with st.spinner("Finding your city..."):
-            try:
-                g = geocoder.osm(city) # Use OpenStreetMap
-                if g.ok:
-                    st.success(f"✅ Found: {g.address}")
-                    st.info(f"📍 Coordinates: {g.latlng[0]:.4f}, {g.latlng[1]:.4f}")
-                    return g.latlng
-                else:
-                    st.error("Could not determine current location. Please check spelling or try 'City, Country' format.")
-                    st.stop()
-            except Exception as e:
-                st.error(f"Error fetching location: {str(e)}")
-                st.stop()
-    else:
-        st.info("Please enter your city to get prayer times.")
-        st.write("**Example:** 'New York, USA' or 'Karachi, Pakistan'")
-        st.stop()
-
+    try:
+        response = requests.get("https://ipinfo.io/json")
+        data = response.json()
+        return data ['latitude'], data['longitude'], data['city']
+    except:
+        return None
+    
 def fetch_prayer_times(lat, lon, method=2, school=0):
     try:
         url = f"https://api.aladhan.com/v1/timings?latitude={lat}&longitude={lon}&method={method}&school={school}"
@@ -273,7 +253,7 @@ try:
         st.subheader("🕓 Next Prayer")
 
         # Prominent display for next prayer
-        col1, col2 = st.columns([2, 1])
+        col1, col2 = st.columns(1)
         with col1:
             st.write(f"**{next_prayer[0]}** at {next_prayer[1]}")
             if minutes_remaining <= 60:
