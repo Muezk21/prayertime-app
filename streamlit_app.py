@@ -61,10 +61,16 @@ region_reccommendations = {
 load_dotenv()
 
 # Twilio credentials
-account_sid = os.getenv("TWILIO_ACCOUNT_SID")
-auth_token = os.getenv("TWILIO_AUTH_TOKEN")
-twilio_number = os.getenv("TWILIO_PHONE_NUMBER")
-your_number = os.getenv("YOUR_PHONE_NUMBER")
+try:
+    account_sid = st.secrets["TWILIO_ACCOUNT_SID"]
+    auth_token = st.secrets["TWILIO_AUTH_TOKEN"]
+    twilio_number = st.secrets["TWILIO_PHONE_NUMBER"]
+    your_number = st.secrets["YOUR_PHONE_NUMBER"]
+except:    
+    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+    twilio_number = os.getenv("TWILIO_PHONE_NUMBER")
+    your_number = os.getenv("YOUR_PHONE_NUMBER")
 
 if account_sid and auth_token:
     client = Client(account_sid, auth_token)
