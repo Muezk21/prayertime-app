@@ -33,8 +33,8 @@ method_names = {
     99: "Custom (requires manual fajr/isha angles)"
 }
 
-#Regional reccommendations for better user experience
-region_reccommendations = {
+#Regional recommendations for better user experience
+region_recommendations = {
     "US North America": [1], #ISNA
     "🇸🇦 Saudi Arabia": [4],   # Umm Al-Qura, Makkah
     "🌍 Most Muslim Countries": [3],  # MWL
@@ -78,21 +78,13 @@ else:
     client = None
     st.warning("Twilio credentials not set. SMS notifications will be disabled.")
 
-# Add this right after your credential loading lines
-st.write("DEBUG INFO:")
-st.write(f"Account SID: {account_sid}")
-st.write(f"Auth Token: {auth_token}")  
-st.write(f"Twilio Number: {twilio_number}")
-st.write(f"Your Number: {your_number}")
-
-
 # --- Streamlit UI: User Inputs ---
 st.title("🕌 Islamic Prayer Time App")
 st.write("This app shows prayer times for your location and notifies you before the next prayer.")
 
 st.subheader("🌍 Recommended by Region")
 with st.expander("Click to see recommendations for your region"):
-    for region, methods in region_reccommendations.items():
+    for region, methods in region_recommendations.items():
         method_list = ", ".join([method_names[m] for m in methods])
         st.write(f"**{region}**: {method_list}")
 
@@ -100,7 +92,8 @@ method = st.selectbox(
     "Select Calculation Method",
     options=list(method_names.keys()),
     format_func=lambda x: method_names[x]
-    )
+)
+
 method_descriptions = {
     1: "Standard in USA and Canada. Conservative approach. Fajr: 15°, Isha: 15°.",
     2: "Used widely in Pakistan, India, Bangladesh, and Afghanistan. Fajr: 18°, Isha: 18°.",
@@ -220,7 +213,7 @@ def get_next_prayer(times, timezone):
     
 def send_sms(prayer, time_str):
     if not client:
-        return "SMS_NOT_CONFIGUERED"
+        return "SMS_NOT_CONFIGURED"
     
     try:
         sms_body = f"Reminder: {prayer} prayer is at {time_str}. Wudhu and prepare for prayer."
@@ -239,8 +232,8 @@ try:
         latitude, longitude = get_current_location()
         times, timezone = fetch_prayer_times(latitude, longitude, method=method, school=school)
 
-    #Display location info
-    col1, col2, col3 =st.columns(3)
+    # Display location info
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.metric("📍 Latitude", f"{latitude:.4f}")
     with col2:
@@ -280,9 +273,9 @@ try:
         st.subheader("🕓 Next Prayer")
 
         # Prominent display for next prayer
-        col1, col2 =st.columns ([2, 1])
+        col1, col2 = st.columns([2, 1])
         with col1:
-            st.write(f"***{next_prayer[0]}** at {next_prayer[1]}")
+            st.write(f"**{next_prayer[0]}** at {next_prayer[1]}")
             if minutes_remaining <= 60:
                 st.write(f"⏳ {minutes_remaining} minutes remaining")
             else:
@@ -293,11 +286,11 @@ try:
         with col2:
             if minutes_remaining <= 5:
                 st.success("🔔 Prayer time approaching!")
-                if st.button("Send SMS Reminder", typw="primary"):
+                if st.button("Send SMS Reminder", type="primary"):
                     with st.spinner("Sending SMS..."):
                         sms_result = send_sms(next_prayer[0], next_prayer[1])
 
-                        if sms_result == "SMS_NOT_CONFIGUERED":
+                        if sms_result == "SMS_NOT_CONFIGURED":
                             st.error("SMS notifications are not configured. Please set up Twilio credentials or check your .env file.")
                         elif sms_result.startswith("SMS-ERROR:"):
                             st.error(f" ❌ {sms_result}")
