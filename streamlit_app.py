@@ -35,10 +35,10 @@ method_names = {
 
 #Regional reccommendations for better user experience
 region_reccommendations = {
-    "US North America": [2], #ISNA
+    "US North America": [1], #ISNA
     "🇸🇦 Saudi Arabia": [4],   # Umm Al-Qura, Makkah
     "🌍 Most Muslim Countries": [3],  # MWL
-    "🇵🇰 Pakistan/India": [1], # Karachi
+    "🇵🇰 Pakistan/India": [2], # Karachi
     "🇪🇬 Egyptian General Authority of Survey": [5],  # Egyptian
     "🇮🇷 Iran": [7],           # Tehran
     "🇦🇪 UAE": [8],            # Gulf Region
@@ -88,8 +88,8 @@ method = st.selectbox(
     format_func=lambda x: method_names[x]
     )
 method_descriptions = {
-    1: "Used widely in Pakistan, India, Bangladesh, and Afghanistan. Fajr: 18°, Isha: 18°.",
-    2: "Standard in USA and Canada. Conservative approach. Fajr: 15°, Isha: 15°.",
+    1: "Standard in USA and Canada. Conservative approach. Fajr: 15°, Isha: 15°.",
+    2: "Used widely in Pakistan, India, Bangladesh, and Afghanistan. Fajr: 18°, Isha: 18°.",
     3: "Used in Europe, Far East, and parts of America. Most widely accepted. Fajr: 18°, Isha: 17°.",
     4: "Used in Saudi Arabia for Hajj and Umrah. Fajr: 18.5°, Isha: 90 minutes after Maghrib.",
     5: "Used in Egypt, Syria, Lebanon, and parts of Asia. Fajr: 19.5°, Isha: 17.5°.",
@@ -128,11 +128,32 @@ else:
 
 # --- Core Functions ---
 def get_current_location():
-    g = geocoder.ip('me')
-    if g.ok:
-        return g.latlng
+    st.subheader("📍 Get Current Location")
+
+    city = st.text_input(
+        "Enter your city",
+        placeholder="e.g. New York, Riyadh, Karachi",
+        help="Enter city name or 'City, Country' for better accuracy"
+    )
+
+    if city:
+        with st.spinner("Finding your city..."):
+            try:
+                g = geocoder.osm(city) # Use OpenStreetMap
+                if g.ok:
+                    st.success(f"✅ Found: {g.address}")
+                    st.info(f"📍 Coordinates: {g.latlng[0]:.4f}, {g.latlng[1]:.4f}")
+                    return g.latlng
+                else:
+                    st.error("Could not determine current location. Please check spelling or try 'City, Country' format.")
+                    st.stop()
+            except Exception as e:
+                st.error(f"Error fetching location: {str(e)}")
+                st.stop()
     else:
-        raise Exception("Could not determine current location")
+        st.info("Please enter your city to get prayer times.")
+        st.write("**Example:** 'New York, USA' or 'Karachi, Pakistan'")
+        st.stop()
 
 def fetch_prayer_times(lat, lon, method=2, school=0):
     try:
