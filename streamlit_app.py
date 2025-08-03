@@ -209,7 +209,11 @@ def send_sms(prayer, time_str):
 # --- Main App Logic ---
 try:
     with st.spinner("Fetching prayer times..."):
-        latitude, longitude = get_current_location()
+        location_result = get_current_location()
+        if not location_result:
+            st.error("Could not determine your location. Please check your internet connection or try again later.")
+            st.stop()
+        latitude, longitude = location_result
         times, timezone = fetch_prayer_times(latitude, longitude, method=method, school=school)
 
     # Display location info
