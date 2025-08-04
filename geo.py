@@ -44,6 +44,7 @@ def location_ui():
         else:
             st.success(f"📍 GPS location: {lat:.4f}, {lon:.4f}")
             city = None
+            return lat, lon, city
     elif choice == "Auto IP Location":
         with st.spinner("Getting location from IP..."):
             lat, lon, city = get_ip_location()
@@ -52,7 +53,7 @@ def location_ui():
                 return None, None, None
             else:
                 st.success(f"📍 IP location: {city} ({lat:.4f}, {lon:.4f})")
-                
+                return lat, lon, city
     else:  # Manual
         st.info("Enter your coordinates manually:")
         lat = st.number_input("Latitude", format="%.6f", help="Example: 40.7128 for New York")
