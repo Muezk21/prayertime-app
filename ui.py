@@ -105,6 +105,9 @@ def main():
     st.title("🕌 Islamic Prayer Time App")
     st.write("This app shows prayer times for your location and notifies you before the next prayer.")
     
+    # Mobile layout toggle for testing
+    st.session_state['mobile'] = st.checkbox ("Mobile Layout", help="Toggle to test mobile view")
+    
     # Region recommendations
     show_region_recommendations()
     
@@ -135,14 +138,21 @@ def main():
             times, timezone = fetch_prayer_times(lat, lon, method, school)
         
         # Display location info
-        col1, col2, col3 = st.columns(2)
-        with col1:
+        if st.session_state.get('mobile', False):
             st.metric("📍 Latitude", f"{lat:.4f}")
-        with col2:
             st.metric("📍 Longitude", f"{lon:.4f}")
-        with col3:
             current_time = datetime.now(pytz.timezone(timezone)).strftime("%H:%M:%S")
             st.metric("🕐 Current Time", current_time)
+        
+        else:
+            col1, col2, col3 = st.columns(3)      
+            with col1:
+                st.metric("📍 Latitude", f"{lat:.4f}")
+            with col2:
+                st.metric("📍 Longitude", f"{lon:.4f}")
+            with col3:
+                current_time = datetime.now(pytz.timezone(timezone)).strftime("%H:%M:%S")
+                st.metric("🕐 Current Time", current_time)
         
         st.write(f"**Timezone:** {timezone}")
         st.write(f"**Calculation Method:** {METHOD_NAMES[method]}")
