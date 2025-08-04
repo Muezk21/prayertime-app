@@ -1,4 +1,4 @@
-method_names = {
+METHOD_NAMES = {
     1: "Islamic Society of North America (ISNA)", 
     2: "University of Islamic Sciences, Karachi",
     3: "Muslim World League (MWL)",
