@@ -23,7 +23,7 @@ METHOD_NAMES = {
 }
 
 #Regional recommendations for better user experience
-region_recommendations = {
+REGION_RECOMMENDATIONS = {
     "US North America": [1], #ISNA
     "🇸🇦 Saudi Arabia": [4],   # Umm Al-Qura, Makkah
     "🌍 Most Muslim Countries": [3],  # MWL
