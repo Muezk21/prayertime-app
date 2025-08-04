@@ -34,7 +34,7 @@ def display_prayer_times(times, timezone):
     
     for prayer in main_prayers:
         if prayer in times:
-            with cols[col_idx % 3]:
+            with cols[col_idx % len(cols)]:
                 icon = prayer_icons.get(prayer, "🕌")
                 st.metric(f"{icon} {prayer}", times[prayer])
                 col_idx += 1
