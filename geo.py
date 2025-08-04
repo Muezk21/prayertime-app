@@ -1,9 +1,9 @@
 import streamlit as st
-import streamlit_geolocation 
+from streamlit_geolocation import streamlit_geolocation 
 import requests
 
 def get_user_coords():
-    coords = streamlit_geolocation.geolocation(timeout=10_000)
+    coords = streamlit_geolocation(timeout=10_000)
     # Fix the 0 coordinate bug
     if coords and coords.get("lat") is not None and coords.get("lon") is not None:
         return coords["lat"], coords["lon"]
