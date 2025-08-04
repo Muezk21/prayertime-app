@@ -109,7 +109,7 @@ def main():
     show_region_recommendations()
     
     # Location input
-    lat, lon = location_ui()
+    lat, lon, city = location_ui()
     if lat is None:
         st.error("Please select a location method above")
         st.stop()

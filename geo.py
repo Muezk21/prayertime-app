@@ -40,16 +40,16 @@ def location_ui():
         if lat is None:
             st.warning("GPS unavailable. Try 'Auto IP Location' or switch to Manual.")
             # Don't stop - let user choose different option
-            return None, None
+            return None, None, None
         else:
             st.success(f"📍 GPS location: {lat:.4f}, {lon:.4f}")
-            
+            city = None
     elif choice == "Auto IP Location":
         with st.spinner("Getting location from IP..."):
             lat, lon, city = get_ip_location()
             if lat is None:
                 st.error("IP location failed. Please use Manual input.")
-                return None, None
+                return None, None, None
             else:
                 st.success(f"📍 IP location: {city} ({lat:.4f}, {lon:.4f})")
                 
@@ -57,9 +57,9 @@ def location_ui():
         st.info("Enter your coordinates manually:")
         lat = st.number_input("Latitude", format="%.6f", help="Example: 40.7128 for New York")
         lon = st.number_input("Longitude", format="%.6f", help="Example: -74.0060 for New York")
-        
+        city = None
         if lat == 0.0 and lon == 0.0:
             st.warning("Please enter your actual coordinates")
-            return None, None
+            return None, None, None
     
-    return lat, lon
+    return lat, lon, city
