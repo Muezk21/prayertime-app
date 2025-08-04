@@ -46,7 +46,7 @@ REGION_RECOMMENDATIONS = {
     "🌙 Moonsighting": [15],    # Moonsighting Committee
 }
 
-method_descriptions = {
+METHOD_DESCRIPTIONS = {
     1: "Standard in USA and Canada. Conservative approach. Fajr: 15°, Isha: 15°.",
     2: "Used widely in Pakistan, India, Bangladesh, and Afghanistan. Fajr: 18°, Isha: 18°.",
     3: "Used in Europe, Far East, and parts of America. Most widely accepted. Fajr: 18°, Isha: 17°.",
