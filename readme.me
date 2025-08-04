@@ -1,188 +1,164 @@
 # 🕌 Islamic Prayer Times App
 
 A comprehensive Streamlit web application that provides accurate Islamic prayer times based on your location, with optional SMS notifications and beautiful visual display.
+This is a modular Streamlit application that provides accurate Islamic prayer times based on your location (browser GPS or manual), supports multiple calculation methods and madhabs, and offers optional SMS notifications via Twilio.
 
-## ✨ Features
 
-### 🕒 Prayer Times Display
-- **5 Daily Prayers**: Fajr, Dhuhr, Asr, Maghrib, Isha
-- **Visual Layout**: Clean 3-column grid with prayer-specific emojis
-- **Additional Islamic Times**: Expandable section showing Imsak, Sunrise, Midnight, and astronomical times
-- **Real-time Location**: Shows current coordinates and local time
+## 📂 Project Structure
 
-### 📱 SMS Notifications
-- **Twilio Integration**: Send prayer reminders to your phone
-- **Customizable Messages**: Islamic-themed reminder texts
-- **Error Handling**: Graceful fallback if SMS service is unavailable
+islamic-prayer-app/
+├── api.py # Aladhan API integration (+ caching)
+├── config.py # Constants: method & region maps, prayer order
+├── geo.py # Browser GPS + manual location input
+├── notifier.py # Twilio SMS client & send_sms() logic
+├── ui.py # Streamlit layout & orchestration
+├── app.py # Entrypoint: runs ui.main()
+├── .env # Local secrets (not tracked by Git)
+├── requirements.txt # Python dependencies
+├── README.md # This file
+└── .gitignore # Ignore .env, logs, pycache/ etc.
 
-### 🌍 Location Services
-- **Automatic Detection**: Uses your browser's geolocation
-- **Manual Input**: Enter custom coordinates if needed
-- **Timezone Support**: Automatic timezone detection and conversion
-- **Global Coverage**: Works worldwide with accurate calculation methods
-
-### 🛡️ Robust Error Handling
-- **API Resilience**: Continues working even if prayer times API is down
-- **Network Tolerance**: Handles connection issues gracefully
-- **Input Validation**: Prevents crashes from invalid coordinates or timezones
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.7+
-- Streamlit
-- Internet connection for prayer times API
-
-### Installation
-
-1. **Clone the repository**
-```bash
-git clone <your-repo-url>
-cd islamic-prayer-times
-```
-
-2. **Install dependencies**
-```bash
-pip install streamlit requests pytz twilio
-```
-
-3. **Set up environment variables** (Optional - for SMS)
-```bash
-# Create .env file or set environment variables
-TWILIO_ACCOUNT_SID=your_account_sid
-TWILIO_AUTH_TOKEN=your_auth_token
-TWILIO_PHONE_NUMBER=+1234567890
-YOUR_PHONE_NUMBER=+0987654321
-```
-
-4. **Run the application**
-```bash
-streamlit run app.py
-```
-
-## 📋 Usage
-
-### Getting Prayer Times
-1. **Allow location access** when prompted by your browser
-2. **View prayer times** displayed in an organized grid
-3. **Check additional times** by expanding the "Additional Islamic Times" section
-4. **See your location** and current time at the top
-
-### Setting Up SMS Notifications (Optional)
-1. **Create Twilio account** at [twilio.com](https://twilio.com)
-2. **Get credentials**: Account SID, Auth Token, and phone number
-3. **Set environment variables** as shown above
-4. **Test SMS** using the send notification feature
-
-### Manual Location Entry
-If automatic location detection fails:
-1. **Enter latitude** in the sidebar
-2. **Enter longitude** in the sidebar
-3. **Click "Get Prayer Times"**
-
-## 🔧 Configuration
-
-### Prayer Calculation Methods
-The app uses various Islamic calculation methods:
-- **Method 2**: Islamic Society of North America (ISNA)
-- **Method 3**: Muslim World League
-- **Method 4**: Umm Al-Qura University, Makkah
-- *And more...*
-
-### Supported Timezones
-- Automatic detection based on coordinates
-- Manual timezone selection available
-- Full global timezone support via `pytz`
-
-## 📱 SMS Notification Format
-```
-🕌 Prayer Reminder: Fajr prayer is at 05:30. 
-Time for Wudhu and preparation. 
-May Allah accept your prayers.
-```
-
-## 🏗️ Technical Architecture
-
-### Core Components
-- **Frontend**: Streamlit web interface
-- **Prayer Times API**: Real-time Islamic prayer calculations
-- **SMS Service**: Twilio API integration
-- **Location Service**: Browser geolocation + manual input
-- **Error Handling**: Comprehensive try-catch blocks
-
-### API Integration
-- **Prayer Times**: [Aladhan API](http://api.aladhan.com/)
-- **SMS**: [Twilio API](https://www.twilio.com/docs/sms)
-- **Geolocation**: Browser HTML5 Geolocation API
-
-### Error Handling Features
-- **API Fallbacks**: Graceful degradation if services are down
-- **Input Validation**: Prevents crashes from invalid data
-- **User Feedback**: Clear error messages and recovery suggestions
-- **Network Resilience**: Continues working with limited connectivity
-
-## 🎨 User Interface
-
-### Main Display
-- **3-Column Layout**: Prayer times with emoji icons
-- **Metric Cards**: Professional-looking time displays
-- **Color Coding**: Visual distinction between prayer types
-
-### Additional Features
-- **Expandable Sections**: Optional detailed Islamic times
-- **Location Info**: Current coordinates and local time
-- **Responsive Design**: Works on desktop and mobile devices
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Location not detected**
-- Enable location services in your browser
-- Try manual coordinate entry
-- Check internet connection
-
-**Prayer times not loading**
-- Verify internet connection
-- Check if coordinates are valid (-90 to 90 for latitude, -180 to 180 for longitude)
-- Try refreshing the page
-
-**SMS not working**
-- Verify Twilio credentials
-- Check phone number format (+1234567890)
-- Ensure sufficient Twilio account balance
-
-**App crashes or errors**
-- Check the error message in the app
-- Verify all environment variables are set correctly
-- Try restarting the Streamlit app
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Aladhan API** for providing accurate Islamic prayer times
-- **Twilio** for SMS notification services
-- **Streamlit** for the amazing web framework
-- **Islamic community** for guidance on proper prayer time calculations
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-1. Check the troubleshooting section above
-2. Open an issue on GitHub
-3. Ensure you're using the latest version of the app
 
 ---
 
-**May Allah accept your prayers and make this tool beneficial for the Muslim community. Ameen.** 🤲
+## ✨ Features
+
+- **Multiple Calculation Methods**  
+  Choose from ISNA, MWL, Umm al-Qura, Karachi, and more (see `config.py`).
+
+- **Madhab Selection**  
+  Shafi’i (standard) or Hanafi (later Asr) adjustments.
+
+- **Location Input**  
+  - 🔵 Browser GPS via HTML5 (mobile & desktop)  
+  - ✏️ Manual latitude/longitude fallback
+
+- **Real-Time Display**  
+  - 5 daily prayers: Fajr, Dhuhr, Asr, Maghrib, Isha  
+  - Additional times (Sunrise, Imsak, etc.) in an expandable section  
+  - Current local time & timezone
+
+- **SMS Notifications**  
+  - Twilio integration (`notifier.py`)  
+  - Send prayer reminders 5 min before time  
+  - Clean separation of UI & SMS logic
+
+- **Robust Error Handling**  
+  - Graceful fallbacks for geolocation, network/API failures  
+  - User-friendly messages with developer logging to `app.log`
+
+---
+
+## 🚀 Quick Start and Take a Peak!
+
+### 1. Clone & Enter Directory
+
+```bash
+git clone <your-repo-url>
+cd islamic-prayer-app
+
+python -m venv .venv
+# macOS/Linux
+source .venv/bin/activate
+# Windows
+.\.venv\Scripts\activate
+
+pip install -r requirements.txt
+
+TWILIO_ACCOUNT_SID=ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE_NUMBER=+1234567890
+TWILIO_TO_PHONE_NUMBER=+0987654321
+
+streamlit run app.py
+
+*****************
+    HOW TO USE
+*****************
+1. Select Location
+
+Default: Browser GPS (prompt appears)
+
+Fallback: enter latitude & longitude manually
+
+2. Choose Calculation Method
+
+Pick from the dropdown (ISNA, MWL, etc.)
+
+3. Select Madhab for Asr
+
+Shafi’i (earlier) or Hanafi (later)
+
+4. View Prayer Times
+
+Organized metric cards with prayer emojis
+
+Expand “Additional Islamic Times” for extra entries
+
+5. Next Prayer & SMS
+
+Next upcoming prayer is highlighted
+
+If within 5 min, click Send SMS Reminder
+
+Success or error message displays
+
+*****************************
+    Configuration Details
+*****************************
+
+config.py
+
+    METHOD_NAMES: mapping of integer IDs → method names
+
+    REGION_RECS: suggested defaults by region
+
+    PRAYER_ORDER: ordering used for “next prayer” logic
+
+api.py
+
+    fetch_prayer_times(lat, lon, method, school)
+
+    Caches results for 1 hour via @st.cache_data
+
+geo.py
+
+    location_ui(): radio selector + GPS/manual input logic
+
+notifier.py
+
+    make_twilio_client(): reads from env, returns (client, frm, to)
+
+    send_sms(prayer, time_str) → (success: bool, message: str)
+
+ui.py
+
+    Orchestrates all components: imports modules, handles flow, error UI
+
+***********************
+    Troubleshooting
+***********************
+
+    GPS Fails → switch to Manual input
+
+    API Errors → check internet, validate coordinates, retry
+
+    SMS Errors → verify Twilio credentials & phone numbers
+
+    Streamlit Version → use streamlit==1.25.0 in requirements.txt
+
+
+Contributing
+
+1. Fork & clone
+
+2. Create a feature branch
+
+3. Commit & push
+
+4. Open a pull request
+
+License
+This project is licensed under the MIT License. See LICENSE for details.
+
+May Allah accept your efforts and make this tool a benefit to the community. Ameen. 🤲

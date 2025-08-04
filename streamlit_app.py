@@ -6,6 +6,8 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 from twilio.rest import Client
+from streamlit_geolocation import geolocation
+
 
 # --- Constants & Config ---
 #Prayer calculation methods
@@ -142,10 +144,11 @@ def get_current_location():
     except:
         return None
     
+@st.cache_data(show_spinner=False,ttl=3600)
 def fetch_prayer_times(lat, lon, method=2, school=0):
     try:
         url = f"https://api.aladhan.com/v1/timings?latitude={lat}&longitude={lon}&method={method}&school={school}"
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         if response.status_code == 200:
             data = response.json()
             return data["data"]["timings"], data["data"]["meta"]["timezone"]
@@ -307,4 +310,9 @@ except Exception as e:
 
 # Footer
 st.markdown("---")
-st.write("**📚 Data Source:** [Aladhan Prayer Times API](https://aladhan.com/prayer-times-api)")
+st.markdown(
+    "📚 Data Source: "
+    "<a href='https://aladhan.com/prayer-times-api' target='_blank'>"
+    "Aladhan Prayer Times API</a>",
+    unsafe_allow_html=True
+)
