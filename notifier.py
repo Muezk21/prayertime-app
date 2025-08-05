@@ -3,6 +3,7 @@ import os
 import logging
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
+from typing import Tuple
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -19,7 +20,7 @@ def make_twilio_client():
     logger.warning("Twilio credentials missing")
     return None, None, None
 
-def send_sms(prayer: str, time_str: str) -> tuple[bool, str]:
+def send_sms(prayer: str, time_str: str) -> Tuple[bool, str]:
     """
     Returns (success, message). No UI calls here.
     """
