@@ -12,12 +12,12 @@ def show_region_recommendations():
     with st.expander("Click to see recommendations for your region"):
         for region, methods in REGION_RECOMMENDATIONS.items():
             method_list = ", ".join([METHOD_NAMES[m] for m in methods])
-            st.write(f"{region}: {method_list}")
+            st.text(f"{region}: {method_list}")
 
 def show_method_info(method):
     """Show description for selected calculation method"""
     if method in METHOD_DESCRIPTIONS:
-        st.info(f"ℹ️ {METHOD_DESCRIPTIONS[method]}")
+        st.info(METHOD_DESCRIPTIONS[method])
 
 def display_prayer_times(times, timezone):
     """Display prayer times in a formatted grid"""
@@ -103,7 +103,7 @@ def show_next_prayer(next_prayer, minutes_remaining):
 
 def main():
     st.title("🕌 Islamic Prayer Time App")
-    st.write("This app shows prayer times for your location and notifies you before the next prayer.")
+    st.text("This app shows prayer times for your location and notifies you before the next prayer.")
     
     # Mobile layout toggle for testing
     st.session_state['mobile'] = st.checkbox ("Mobile Layout", help="Toggle to test mobile view")
@@ -154,9 +154,13 @@ def main():
                 current_time = datetime.now(pytz.timezone(timezone)).strftime("%H:%M:%S")
                 st.metric("🕐 Current Time", current_time)
         
-        st.write(f"Timezone: {timezone}")
-        st.write(f"Calculation Method: {METHOD_NAMES[method]}")
-        
+        st.markdown(
+            f"<b>Timezone:</b> {timezone}", unsafe_allow_html=True
+        )
+        st.markdown(
+            f"<b>Calculation Method:</b> {METHOD_NAMES[method]}",
+            unsafe_allow_html=True
+        )
         # Display prayer times
         display_prayer_times(times, timezone)
         
@@ -169,16 +173,19 @@ def main():
             main_prayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
             other_times = {k: v for k, v in times.items() if k not in main_prayers}
             for time_name, time_value in other_times.items():
-                st.write(f"{time_name}: {time_value}")
+                st.text(f"{time_name}: {time_value}")
         
     except Exception as e:
         st.error(f"❌ Something went wrong: {str(e)}")
-        st.info("💡 Please try refreshing the page or check your internet connection.")
+        st.text("💡 Please try refreshing the page or check your internet connection.")
     
     # Footer
     st.divider()  
-    st.write("📚 Data Source: Aladhan Prayer Times API")
-    st.write("Visit: https://aladhan.com/prayer-times-api")
+    st.markdown(
+        "📚 Data Source: <a href='https://aladhan.com/prayer-times-api' target='_blank'>"
+        "Aladhan Prayer Times API</a>",
+        unsafe_allow_html=True
+    )
     
 
 if __name__ == "__main__":
