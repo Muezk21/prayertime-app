@@ -12,7 +12,7 @@ def show_region_recommendations():
     with st.expander("Click to see recommendations for your region"):
         for region, methods in REGION_RECOMMENDATIONS.items():
             method_list = ", ".join([METHOD_NAMES[m] for m in methods])
-            st.write(f"**{region}**: {method_list}")
+            st.write(f"{region}: {method_list}")
 
 def show_method_info(method):
     """Show description for selected calculation method"""
@@ -75,14 +75,14 @@ def show_next_prayer(next_prayer, minutes_remaining):
     col1, col2 = st.columns(2)
     with col1:
         prayer_name, time_str = next_prayer
-        st.write(f"**{prayer_name}** at {time_str}")
+        st.write(f"{prayer_name} at {time_str}")
         
         if minutes_remaining <= 60:
             st.write(f"⏳ {minutes_remaining} minutes remaining")
         else:
             hours = minutes_remaining // 60
             mins = minutes_remaining % 60
-            st.write(f"⏰ **{hours}h {mins}m** remaining")
+            st.write(f"⏰ {hours}h {mins}m remaining")
 
     with col2:
         if minutes_remaining <= 5:
@@ -154,8 +154,8 @@ def main():
                 current_time = datetime.now(pytz.timezone(timezone)).strftime("%H:%M:%S")
                 st.metric("🕐 Current Time", current_time)
         
-        st.write(f"**Timezone:** {timezone}")
-        st.write(f"**Calculation Method:** {METHOD_NAMES[method]}")
+        st.write(f"Timezone: {timezone}")
+        st.write(f"Calculation Method: {METHOD_NAMES[method]}")
         
         # Display prayer times
         display_prayer_times(times, timezone)
@@ -169,7 +169,7 @@ def main():
             main_prayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
             other_times = {k: v for k, v in times.items() if k not in main_prayers}
             for time_name, time_value in other_times.items():
-                st.write(f"**{time_name}:** {time_value}")
+                st.write(f"{time_name}: {time_value}")
         
     except Exception as e:
         st.error(f"❌ Something went wrong: {str(e)}")
