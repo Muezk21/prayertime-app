@@ -176,13 +176,10 @@ def main():
         st.info("💡 Please try refreshing the page or check your internet connection.")
     
     # Footer
-    st.markdown("---")
-    st.markdown(
-        "📚 Data Source: "
-        "<a href='https://aladhan.com/prayer-times-api' target='_blank'>"
-        "Aladhan Prayer Times API</a>",
-        unsafe_allow_html=True
-    )
+    st.divider()  
+    st.write("📚 Data Source: Aladhan Prayer Times API")
+    st.write("Visit: https://aladhan.com/prayer-times-api")
+    
 
 if __name__ == "__main__":
     main()
