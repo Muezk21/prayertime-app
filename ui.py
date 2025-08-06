@@ -2,7 +2,8 @@ import streamlit as st
 from datetime import datetime, timedelta
 import pytz
 import time as time_sleep
-from config import METHOD_NAMES, REGION_RECOMMENDATIONS, METHOD_DESCRIPTIONS, PRAYER_ORDER
+# Ensure PRAYER_ORDER, REGION_RECOMMENDATIONS, METHOD_NAMES, METHOD_DESCRIPTIONS are imported
+from config import METHOD_NAMES, REGION_RECOMMENDATIONS, METHOD_DESCRIPTIONS, PRAYER_ORDER 
 from geo import location_ui
 from api import fetch_prayer_times
 from notifier import send_sms
@@ -21,9 +22,11 @@ def render_settings_in_sidebar():
     st.sidebar.title("⚙️ Settings")
     st.sidebar.markdown("Adjust your location and prayer calculation preferences here.")
 
-    st.sidebar.subheader("📍 Location")
-    lat, lon, city = location_ui() # geo.py handles location UI
+    # Location input section in sidebar
+    st.sidebar.subheader("📍 Location Input")
+    lat, lon, city = location_ui() # geo.py now handles all its UI elements being in sidebar
 
+    # Calculation Method and Madhab sections in sidebar
     st.sidebar.subheader("🕋 Calculation Method")
     method = st.sidebar.selectbox(
         "Select a method:",
@@ -142,22 +145,40 @@ def render_prayer_times_tab(times, timezone, next_prayer_info):
 
 def render_details_tab(times):
     """Renders the secondary tab with additional times and regional recommendations."""
+    print("DEBUG: Entering render_details_tab") # Debug print
+    
     st.subheader("Additional Times", anchor=False)
     
     # Filter out main prayers and sunrise from additional times
     main_prayers_and_sunrise = {"Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"}
     other_times = {k: v for k, v in times.items() if k not in main_prayers_and_sunrise}
     
+    print(f"DEBUG: other_times (from API response): {other_times}") # Debug print
+    
     if other_times:
         # Display as a table for better readability
         st.table(other_times)
     else:
+        # This message will now be explicitly shown if no additional times are provided by API
         st.info("No additional times available with the selected calculation method or API response.", icon="💡")
 
     st.subheader("Regional Method Recommendations", anchor=False)
-    for region, methods in REGION_RECOMMENDATIONS.items():
-        method_list = ", ".join([METHOD_NAMES[m] for m in methods])
-        st.text(f"**{region}:** {method_list}")
+    
+    print(f"DEBUG: REGION_RECOMMENDATIONS content: {REGION_RECOMMENDATIONS}") # Debug print
+    print(f"DEBUG: METHOD_NAMES content: {METHOD_NAMES}") # Debug print
+
+    if REGION_RECOMMENDATIONS and METHOD_NAMES:
+        for region, methods in REGION_RECOMMENDATIONS.items():
+            method_names = []
+            for m in methods:
+                method_name = METHOD_NAMES.get(m, f"Unknown Method ({m})")
+                method_names.append(method_name)
+            method_list = ", ".join(method_names)
+            st.text(f"**{region}:** {method_list}") # Keeping bold for region, simplifying list join
+    else:
+        st.warning("Regional recommendations not available. Check config.py.", icon="⚠️")
+    print("DEBUG: Exiting render_details_tab") # Debug print
+
 
 def render_footer():
     """Renders the footer."""
@@ -167,7 +188,7 @@ def render_footer():
         "Data provided by <a href='https://aladhan.com/prayer-times-api'>Aladhan API</a>. "\
         "App designed to be your daily prayer companion."\
         "</div>",
-        unsafe_allow_html=True # Small, centered footer HTML is generally safe
+        unsafe_allow_html=True
     )
 
 def main():
@@ -202,10 +223,13 @@ def main():
             render_prayer_times_tab(times, timezone, get_next_prayer(times, timezone))
 
         with tab2:
-            render_details_tab(times)
+            render_details_tab(times) # This should now display content if data is present
             
     except Exception as e:
         st.error(f"❌ Failed to fetch prayer times: {e}", icon="🔥")
         st.warning("Please check your internet connection or try different settings in the sidebar.", icon="💡")
     
     render_footer() # Renders footer
+
+if __name__ == "__main__":
+    main()
