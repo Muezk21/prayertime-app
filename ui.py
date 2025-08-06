@@ -103,6 +103,15 @@ def show_next_prayer(next_prayer, minutes_remaining):
 
 def main():
     st.title("🕌 Islamic Prayer Time App")
+    
+    st.markdown("""
+    <style>
+    st.Exception { display: none !important; }
+    .main .block-container { padding-top: 1rem; }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    
     st.text("This app shows prayer times for your location and notifies you before the next prayer.")
     
     # Mobile layout toggle for testing
@@ -154,13 +163,9 @@ def main():
                 current_time = datetime.now(pytz.timezone(timezone)).strftime("%H:%M:%S")
                 st.metric("🕐 Current Time", current_time)
         
-        st.markdown(
-            f"<b>Timezone:</b> {timezone}", unsafe_allow_html=True
-        )
-        st.markdown(
-            f"<b>Calculation Method:</b> {METHOD_NAMES[method]}",
-            unsafe_allow_html=True
-        )
+        st.text(f"Timezone: {timezone}")
+        st.text(f"Calculation Method:{METHOD_NAMES[method]}")
+        
         # Display prayer times
         display_prayer_times(times, timezone)
         
@@ -180,12 +185,8 @@ def main():
         st.text("💡 Please try refreshing the page or check your internet connection.")
     
     # Footer
-    st.divider()  
-    st.markdown(
-        "📚 Data Source: <a href='https://aladhan.com/prayer-times-api' target='_blank'>"
-        "Aladhan Prayer Times API</a>",
-        unsafe_allow_html=True
-    )
+    st.text("📚 Data Source: Aladhan Prayer Times API")
+    st.text("🔗 https://aladhan.com/prayer-times-api")
     
 
 if __name__ == "__main__":
