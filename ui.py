@@ -19,11 +19,10 @@ def render_header():
 
 def render_settings_in_sidebar():
     """Renders all settings (location, calculation, madhab) in the Streamlit sidebar."""
-    st.sidebar.title("⚙️ Settings")
+    st.sidebar.title("📍 Location Input")
     st.sidebar.markdown("Adjust your location and prayer calculation preferences here.")
 
     # Location input section in sidebar
-    st.sidebar.subheader("📍 Location Input")
     lat, lon, city = location_ui() # geo.py now handles all its UI elements being in sidebar
 
     # Calculation Method and Madhab sections in sidebar
