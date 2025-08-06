@@ -71,4 +71,4 @@ METHOD_DESCRIPTIONS = {
 }
 
 
-prayer_order = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
+PRAYER_ORDER = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
